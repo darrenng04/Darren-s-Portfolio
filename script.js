@@ -97,15 +97,36 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Typing animation for hero section
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
+function typeWriter(element, textParts, speed = 80) {
+    let partIndex = 0;
+    let charIndex = 0;
     element.innerHTML = '';
     
     function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
+        if (partIndex < textParts.length) {
+            const currentPart = textParts[partIndex];
+            
+            if (charIndex < currentPart.text.length) {
+                if (charIndex === 0 && currentPart.isHighlight) {
+                    // Start highlight span
+                    element.innerHTML += '<span class="highlight">';
+                }
+                
+                element.innerHTML += currentPart.text.charAt(charIndex);
+                charIndex++;
+                
+                if (charIndex === currentPart.text.length && currentPart.isHighlight) {
+                    // End highlight span
+                    element.innerHTML += '</span>';
+                }
+                
+                setTimeout(type, speed);
+            } else {
+                // Move to next part
+                partIndex++;
+                charIndex = 0;
+                setTimeout(type, speed);
+            }
         }
     }
     
@@ -114,12 +135,17 @@ function typeWriter(element, text, speed = 100) {
 
 // Initialize typing animation when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const originalText = heroTitle.innerHTML;
-        heroTitle.style.opacity = '1';
+    const typedTextElement = document.getElementById('typed-text');
+    if (typedTextElement) {
+        // Define the message parts with highlighting info
+        const messageParts = [
+            { text: "Hi, I'm ", isHighlight: false },
+            { text: "Darren Ng", isHighlight: true },
+            { text: " and welcome to my portfolio!", isHighlight: false }
+        ];
+        
         setTimeout(() => {
-            typeWriter(heroTitle, originalText, 50);
+            typeWriter(typedTextElement, messageParts, 60);
         }, 500);
     }
 });
