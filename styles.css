@@ -211,6 +211,21 @@ body {
     transform: translateY(-2px);
 }
 
+.btn-outline {
+    background-color: transparent;
+    color: #66b3ff;
+    border-color: #66b3ff;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-outline:hover {
+    background-color: #66b3ff;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 179, 255, 0.3);
+}
+
 .hero-image {
     display: flex;
     justify-content: center;
